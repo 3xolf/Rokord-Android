@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="REQUIRED: Log in on this mobile app AND stay on the SAME network connection as your Roku to pair."
+        android:text="REQUIRED: Log in on this mobile app AND stay on the SAME network connection as your Roku (10.115.151.100) to pair."
         android:textSize="16sp" />
 
     <EditText
@@ -19,8 +19,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        android:hint="Roku IP (same Wi-Fi/LAN, e.g. 192.168.1.50)"
-        android:inputType="text" />
+        android:hint="Roku IP (same Wi-Fi/LAN)"
+        android:inputType="text"
+        android:text="10.115.151.100" />
 
     <EditText
         android:id="@+id/tokenInput"

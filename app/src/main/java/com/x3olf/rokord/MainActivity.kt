@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
+import java.net.URLEncoder
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
@@ -53,7 +54,8 @@ class MainActivity : AppCompatActivity() {
             statusText.text = "Status: Same connection verified ($phoneIp -> $rokuIp). Sending pair request..."
             thread {
                 try {
-                    val url = URL("http://$rokuIp:8060/launch/dev?token=${java.net.URLEncoder.encode(token, "UTF-8")}")
+                    val encToken = URLEncoder.encode(token, "UTF-8")
+                    val url = URL("http://$rokuIp:8060/launch/dev?token=$encToken")
                     val conn = (url.openConnection() as HttpURLConnection).apply {
                         requestMethod = "POST"
                         connectTimeout = 5000
