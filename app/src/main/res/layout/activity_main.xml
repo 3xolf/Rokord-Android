@@ -10,7 +10,37 @@
         android:id="@+id/noticeText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Rokord Mobile Login: Sign in here while connected to the SAME network as your Roku to pair."
-        android:textSize="18sp" />
+        android:layout_marginBottom="16dp"
+        android:text="REQUIRED: Log in on this mobile app AND stay on the SAME network connection as your Roku to pair."
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/rokuIpInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:hint="Roku IP (same Wi-Fi/LAN, e.g. 192.168.1.50)"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/tokenInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Account Token"
+        android:inputType="textPassword" />
+
+    <Button
+        android:id="@+id/pairButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Verify Same Connection &amp; Pair Roku" />
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Status: Waiting for login and same-network pairing."
+        android:textSize="14sp" />
 </LinearLayout>
