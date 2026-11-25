@@ -22,15 +22,30 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install SDK packages and Gradle
+      - name: Install Android SDK packages and Gradle
         run: |
-          yes | sdkmanager --licenses >/dev/null || true
-          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
-          sudo apt-get update -y && sudo apt-get install -y gradle
-          echo "sdk.dir=$ANDROID_HOME" > local.properties
+          SDK_ROOT="/usr/local/lib/android/sdk"
+          mkdir -p "$SDK_ROOT"
+          echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> "$GITHUB_ENV"
+          echo "sdk.dir=$SDK_ROOT" > local.properties
+
+          SDKMANAGER=$(find "$SDK_ROOT" -path "*/bin/sdkmanager" -type f 2>/dev/null | sort -V | tail -n1 || true)
+          if [ -z "$SDKMANAGER" ]; then
+            curl -fsSL "https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip" -o /tmp/cmdtools.zip
+            mkdir -p "$SDK_ROOT/cmdline-tools/latest"
+            unzip -q /tmp/cmdtools.zip -d "$SDK_ROOT/cmdline-tools/latest"
+            if [ -d "$SDK_ROOT/cmdline-tools/latest/cmdline-tools" ]; then
+              mv "$SDK_ROOT/cmdline-tools/latest/cmdline-tools/"* "$SDK_ROOT/cmdline-tools/latest/"
+              rmdir "$SDK_ROOT/cmdline-tools/latest/cmdline-tools"
+            fi
+            SDKMANAGER="$SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+          fi
+
+          yes | "$SDKMANAGER" --sdk_root="$SDK_ROOT" --licenses >/dev/null || true
+          "$SDKMANAGER" --sdk_root="$SDK_ROOT" "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+          command -v gradle >/dev/null 2>&1 || { sudo apt-get update -y && sudo apt-get install -y gradle; }
 
       - name: Build debug APK
         run: gradle assembleDebug --stacktrace
